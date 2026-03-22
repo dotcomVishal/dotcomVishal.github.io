@@ -1,0 +1,705 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* ── COLOUR PALETTE ── */
+:root {
+  --ink:   #1a1a1a;   /* near-black — high contrast text/borders */
+  --paper: #f0f0f0;   /* off-white background */
+  --gray:  #444444;   /* dark gray for body text */
+  --mid:   #777777;   /* medium gray for minor labels */
+  --lt:    #aaaaaa;   /* light gray for decorative elements */
+}
+
+/* ── BASE ── */
+html {
+  scroll-snap-type: y proximity;
+  scroll-padding-top: 80px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+body {
+  margin: 0;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: 'Press Start 2P', monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M0,0 v14 l4,-4 l3,5 l2,-1 l-3,-5 h5 z" fill="white" stroke="black" stroke-width="1" stroke-linejoin="miter"/></svg>'), auto;
+}
+/* Apply the pixel hand to all interactive elements */
+button, .card, .early-btn, .dot {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M5,0 h2 v5 h2 v-3 h2 v3 h2 v3 h2 v6 h-8 v-6 h-2 v-8 z" fill="white" stroke="black" stroke-width="1" stroke-linejoin="miter"/></svg>'), pointer;
+}
+/* --- THE WINDOWS ME SCROLLBAR --- */
+::-webkit-scrollbar {
+  width: 18px; /* Classic chunky width */
+  background: #dfdfdf;
+}
+
+::-webkit-scrollbar-track {
+  background: #dfdfdf;
+  /* The inner shadow of the track */
+  border-left: 2px solid #808080; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  /* The classic 3D pop-out bevel */
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  border-right: 2px solid #000000;
+  border-bottom: 2px solid #000000;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #cccccc;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #a0a0a0;
+  /* Invert the bevel when clicked so it looks "pressed" */
+  border-top: 2px solid #000000;
+  border-left: 2px solid #000000;
+  border-right: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+}
+
+/* ── NAV ── */
+.main-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 40px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  box-sizing: border-box;
+  background-color: rgba(220, 220, 220, 0.95);
+  border-bottom: 2px solid var(--ink);
+  z-index: 999;
+}
+
+.logo {
+  font-size: 14px;
+  letter-spacing: 3px;
+  color: var(--ink);
+}
+
+.early-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  background: transparent;
+  border: 2px solid var(--ink);
+  padding: 8px 14px;
+  cursor: pointer;
+  color: var(--ink);
+  transition: background 0.2s, color 0.2s;
+}
+
+.early-btn:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* ── HERO ── */
+.hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 10%;
+  scroll-snap-align: start;
+}
+
+/* clamp(min, preferred, max) — scales smoothly between screen sizes */
+.title {
+  font-size: clamp(28px, 7vw, 72px);
+  margin: 0;
+  letter-spacing: 6px;
+  color: var(--ink);
+}
+/* Ensure the spans don't break the layout */
+.letter {
+  display: inline-block;
+  transition: color 0.1s ease; /* A very fast transition for a snappy feel */
+  cursor: inherit; /* Inherits your 8-bit pointer */
+}
+
+/* The hover effect on individual letters */
+.letter:hover {
+  color: #ff0000; /* Currently set to red. Change this hex code to whatever you like! */
+}
+
+.subtitle {
+  font-size: clamp(8px, 1.4vw, 13px);
+  margin-top: 24px;
+  color: var(--gray);
+  line-height: 2.0;
+}
+
+.blink {
+  font-size: clamp(7px, 1.1vw, 11px);
+  margin-top: 40px;
+  color: var(--gray);
+}
+
+.cursor {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% { opacity: 0; }
+}
+
+/* ── CANVAS BACKGROUND ── */
+.dino-bg {
+  position: absolute;
+  left: 0;
+  bottom: -2%;
+  width: 100%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+canvas#c {
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+/* ── GENERIC SECTION ── */
+section {
+  min-height: 100vh;
+  padding: 50px 10%;
+  box-sizing: border-box;
+  scroll-snap-align: start;
+}
+
+/* ── SLIDER SCENE ── */
+/* NOTE: padding: 0 overrides the generic section padding above.
+   This is needed so absolutely-positioned children fill the whole viewport. */
+.scene {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  padding: 0;             /* override section padding */
+  overflow: hidden;
+  background: var(--paper);
+  scroll-snap-align: start;
+}
+
+/* Header */
+.hdr {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+.hdr h1 {
+  font-size: clamp(8px, 1.1vw, 13px);
+  letter-spacing: .3em;
+  color: var(--ink);
+}
+
+.hdr-bar {
+  width: 200px;
+  height: 2px;
+  background: var(--ink);
+  margin: 10px auto 0;
+  position: relative;
+}
+
+.hdr-bar::before, .hdr-bar::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  width: 2px;
+  height: 8px;
+  background: var(--ink);
+}
+.hdr-bar::before { left: 0; }
+.hdr-bar::after  { right: 0; }
+
+/* ── CARDS ── */
+.cards-row {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 0 20px;
+}
+
+.card {
+  position: relative;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  flex-shrink: 0;
+  cursor: pointer;
+  overflow: hidden;
+  will-change: width;
+  box-shadow: none;
+  transition: box-shadow 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* Corner notch decorations */
+.card::before, .card::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--paper);
+  z-index: 1;
+}
+.card::before { top: -1px; right: -1px; border-top: 2px solid var(--ink); border-right: 2px solid var(--ink); }
+.card::after  { bottom: -1px; left: -1px; border-bottom: 2px solid var(--ink); border-left: 2px solid var(--ink); }
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.card-num {
+  font-size: 9px;
+  color: var(--mid);
+  letter-spacing: .16em;
+  margin-bottom: 14px;
+}
+
+.card-title {
+  font-size: clamp(10px, 1.4vw, 16px);
+  color: var(--ink);
+  letter-spacing: .06em;
+  line-height: 1.7;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+/* The body text is hidden (max-height: 0) until the card is active */
+.card-body-wrap {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.55s ease;
+}
+
+.card-body {
+  font-size: 8px;
+  line-height: 2.2;
+  color: var(--gray);
+  letter-spacing: .04em;
+  padding-top: 14px;
+  border-top: 2px solid var(--ink);
+  margin-top: 14px;
+}
+
+.card-tag {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 9px;
+  letter-spacing: .12em;
+  padding: 5px 10px;
+  border: 2px solid var(--ink);
+  color: var(--paper);
+  background: var(--ink);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* ── GROUND & ROVER ── */
+.ground { position: absolute; bottom: 108px; left: 0; right: 0; }
+.g-line { height: 3px; background: var(--ink); }
+.g-dash { height: 4px; margin-top: 3px; background: repeating-linear-gradient(to right, var(--lt) 0, var(--lt) 14px, transparent 14px, transparent 26px); }
+.g-dots { height: 3px; margin-top: 5px; background: repeating-linear-gradient(to right, var(--lt) 0, var(--lt) 3px, transparent 3px, transparent 18px); }
+
+.rover {
+  position: absolute;
+  bottom: 108px;
+  transform: translateX(-50%);
+  z-index: 20;
+  will-change: left;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.wheel { animation: spin .85s linear infinite; }
+
+@keyframes puff {
+  0%   { opacity: .8; transform: translate(0,0) scale(1); }
+  100% { opacity: 0;  transform: translate(-12px,-7px) scale(2); }
+}
+.puff { animation: puff .55s ease-out infinite; }
+
+/* ── SLIDER NAV ── */
+.slider-nav {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  z-index: 30;
+}
+
+.nbtn {
+  width: 38px;
+  height: 38px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.nbtn:hover  { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+.nbtn:active { transform: translate(2px,2px);   box-shadow: 1px 1px 0 var(--ink); }
+.nbtn:disabled { opacity: .3; cursor: not-allowed; transform: none; box-shadow: 3px 3px 0 var(--ink); }
+
+.dots { display: flex; gap: 10px; align-items: center; }
+.dot {
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--ink);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.5s ease, transform 0.6s cubic-bezier(0.34,1.3,0.64,1);
+}
+.dot.active { background: var(--ink); transform: scale(1.35); }
+
+.hint {
+  position: absolute;
+  bottom: 36px;
+  font-size: 8px;
+  letter-spacing: .22em;
+  color: var(--mid);
+  white-space: nowrap;
+}
+.hint-l { left: 20px; }
+.hint-r { right: 20px; }
+
+/* ── RESPONSIVE: TABLET (max 768px) ── */
+@media (max-width: 768px) {
+  .main-nav  { padding: 12px 20px; }
+  .logo      { font-size: 11px; }
+  .early-btn { font-size: 8px; padding: 7px 10px; }
+
+  .hero { padding-left: 8%; }
+
+  /* Tighter card gaps on tablet */
+  .cards-row { gap: 10px; padding: 0 14px; }
+  .card-inner { padding: 18px 14px; }
+  .card-title { font-size: 10px; }
+  .card-body  { font-size: 7px; }
+  .card-num   { font-size: 8px; }
+  .card-tag   { font-size: 7px; }
+
+  .hdr h1 { font-size: 8px; letter-spacing: .2em; }
+
+  /* Hide hints on smaller screens — they'd overlap */
+  .hint { display: none; }
+
+  .slider-nav { gap: 16px; }
+  .nbtn { width: 32px; height: 32px; }
+}
+
+/* ── RESPONSIVE: MOBILE (max 480px) ── */
+@media (max-width: 480px) {
+  .main-nav  { padding: 10px 16px; }
+  .logo      { font-size: 9px; }
+  .early-btn { font-size: 7px; padding: 6px 8px; }
+
+  .hero { padding-left: 6%; }
+
+  /* Very tight gaps so the 4 cards fit on a narrow screen */
+  .cards-row { gap: 4px; padding: 0 6px; }
+  .card-inner { padding: 12px 10px; }
+  .card-title { font-size: 9px; line-height: 1.6; }
+  .card-body  { font-size: 6px; line-height: 2.0; }
+  .card-num   { font-size: 7px; margin-bottom: 10px; }
+  .card-tag   { font-size: 6px; margin-top: 10px; padding: 4px 8px; }
+
+  .slider-nav { bottom: 28px; gap: 12px; }
+  .nbtn { width: 28px; height: 28px; }
+}
+/* =========================================
+   ── LOGIN PAGE & CRT MONITOR ──
+   ========================================= */
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  /* A dark checkered background to make the beige monitor pop */
+  background-color: #2a2a2a; 
+  background-image: repeating-linear-gradient(45deg, #2a2a2a 0, #2a2a2a 2px, #222222 2px, #222222 4px);
+}
+
+.crt-assembly {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 60px; /* Clears the navbar */
+}
+
+/* 1. The Chunky Beige Shell */
+.monitor-shell {
+  background: #dfdfdf;
+  padding: 40px;
+  border-radius: 16px;
+  /* Classic 90s 3D Bevel */
+  border-top: 6px solid #ffffff;
+  border-left: 6px solid #ffffff;
+  border-right: 6px solid #808080;
+  border-bottom: 6px solid #808080;
+  box-shadow: 15px 15px 0px rgba(0,0,0,0.5);
+  z-index: 2;
+}
+
+/* 2. The Dark Recessed Bezel */
+.monitor-bezel {
+  background: var(--ink);
+  padding: 24px;
+  border-radius: 20px 20px 25px 25px;
+  border-top: 4px solid #000000;
+  border-left: 4px solid #000000;
+  border-right: 4px solid #333333;
+  border-bottom: 4px solid #333333;
+}
+
+/* 3. The Glowing Glass Screen */
+.monitor-glass {
+  position: relative;
+  background: var(--paper);
+  width: 600px;
+  height: 380px;
+  border-radius: 100px / 12px; /* Gives the screen that slight convex CRT bulge */
+  overflow: hidden;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+}
+
+/* The Scanline Overlay */
+.scanlines {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.08) 50%);
+  background-size: 100% 4px;
+  pointer-events: none; /* Allows you to click through the scanlines */
+  z-index: 10;
+}
+
+/* 4. The Monitor Stand */
+.monitor-neck {
+  width: 90px;
+  height: 30px;
+  background: #dfdfdf;
+  border-left: 4px solid #ffffff;
+  border-right: 4px solid #808080;
+  z-index: 1;
+}
+
+.monitor-base {
+  width: 300px;
+  height: 25px;
+  background: #dfdfdf;
+  border-top: 4px solid #ffffff;
+  border-left: 4px solid #ffffff;
+  border-right: 4px solid #808080;
+  border-bottom: 4px solid #808080;
+  border-radius: 4px 4px 0 0;
+  box-shadow: 15px 15px 0px rgba(0,0,0,0.5);
+}
+
+/* =========================================
+   ── SCREEN UI (THE FORM) ──
+   ========================================= */
+.screen-ui {
+  padding: 40px 60px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.auth-tabs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50px;
+  font-size: 14px;
+}
+
+.tab {
+  color: var(--mid);
+  cursor: inherit; /* Uses your pixel hand cursor */
+}
+
+.tab.active {
+  color: var(--ink);
+  border-bottom: 4px solid var(--ink);
+  padding-bottom: 6px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  flex-grow: 1;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.input-group label {
+  font-size: 10px;
+  color: var(--gray);
+}
+
+.retro-input {
+  font-family: 'Press Start 2P', monospace;
+  background: transparent;
+  border: none;
+  border-bottom: 4px dashed var(--mid);
+  padding: 10px 0;
+  font-size: 12px;
+  color: var(--ink);
+  outline: none;
+  transition: border-bottom 0.2s;
+  cursor: inherit; 
+}
+
+.retro-input:focus {
+  border-bottom: 4px solid var(--ink);
+}
+
+.auth-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: auto;
+}
+
+.btn-google {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  background: transparent;
+  border: none;
+  color: var(--mid);
+  cursor: inherit;
+  transition: color 0.2s;
+}
+
+.btn-google:hover {
+  color: var(--ink);
+}
+
+.btn-submit {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  background: transparent;
+  border: 2px solid var(--ink);
+  padding: 12px 24px;
+  color: var(--ink);
+  cursor: inherit;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-submit:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+
+@media (max-width: 768px) {
+  .monitor-glass { width: 80vw; height: 60vw; }
+  .monitor-shell { padding: 20px; }
+  .screen-ui { padding: 20px; }
+  .auth-tabs { font-size: 10px; margin-bottom: 30px; }
+  .retro-input { font-size: 10px; }
+}
+/* =========================================
+   ── SECURE DASHBOARD PAGE ──
+   ========================================= */
+.dashboard-container {
+  padding: 120px 10%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.terminal-box {
+  background: var(--ink);
+  color: var(--paper);
+  border: 4px solid var(--gray);
+  padding: 30px;
+  box-shadow: 10px 10px 0px rgba(0,0,0,0.1);
+  min-height: 300px;
+}
+
+.term-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px dashed var(--gray);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  font-size: 10px;
+  color: var(--mid);
+}
+
+.term-body p {
+  font-size: 14px;
+  line-height: 2;
+  margin: 0;
+}
+
+.dashboard-widgets {
+  display: flex;
+  gap: 30px;
+}
+
+.widget {
+  flex: 1;
+  border: 2px solid var(--ink);
+  padding: 30px;
+  background: transparent;
+}
+
+.widget h3 {
+  font-size: 14px;
+  margin-top: 0;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 10px;
+}
+
+.widget p {
+  font-size: 10px;
+  color: var(--gray);
+  line-height: 1.8;
+}
+
+@media (max-width: 768px) {
+  .dashboard-widgets { flex-direction: column; }
+  .term-body p { font-size: 10px; }
+}
