@@ -3,161 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>adromeda.me | Signal Established</title>
-    <style>
-        :root {
-            --bg-color: #050510;
-            --text-main: #e2e8f0;
-            --text-muted: #94a3b8;
-            --accent: #8b5cf6;
-            --accent-glow: rgba(139, 92, 246, 0.5);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.08), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(56, 189, 248, 0.08), transparent 25%);
-            overflow: hidden;
-        }
-
-        .container {
-            text-align: center;
-            padding: 2rem;
-            max-width: 600px;
-            animation: fadeUp 1s ease-out forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        @keyframes fadeUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .status {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--accent);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .dot {
-            height: 8px;
-            width: 8px;
-            background-color: var(--accent);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent-glow);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 var(--accent-glow); }
-            70% { box-shadow: 0 0 0 10px rgba(139, 92, 246, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 0 40px var(--accent-glow);
-        }
-
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 3rem;
-            line-height: 1.6;
-        }
-
-        .about-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-
-        .about-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(139, 92, 246, 0.3);
-        }
-
-        .about-card h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-
-        .about-card p {
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            line-height: 1.5;
-        }
-
-        .btn {
-            display: inline-block;
-            background: transparent;
-            color: var(--text-main);
-            text-decoration: none;
-            padding: 0.75rem 1.5rem;
-            border: 1px solid var(--accent);
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.1);
-        }
-
-        .btn:hover {
-            background: var(--accent);
-            color: #fff;
-            box-shadow: 0 0 25px var(--accent-glow);
-            text-shadow: none;
-        }
-    </style>
+    <title>VISION.EXE</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="dino-bg">
+        <canvas id="c"></canvas>
+    </div>
+    <nav class="main-nav">
+        <div class="logo">VISION.EXE</div>
+        <a href="login.html"><button class="early-btn">EARLY ACCESS</button></a>
+    </nav>
+    <main class="hero">
+        <h1 class="title">
+  <span class="letter">V</span><span class="letter">I</span><span class="letter">S</span><span class="letter">I</span><span class="letter">O</span><span class="letter">N</span>
+</h1>
+        <p class="subtitle">Version Control for the Real World.</p>
+        <p class="blink">SCROLL TO CONTINUE <span class="cursor">█</span></p>
+    </main>
+    <section class="scene">
 
-    <div class="container">
-        <div class="status">
-            <div class="dot"></div>
-            System Online
-        </div>
-        
-        <h1>adromeda.me</h1>
-        <p class="subtitle">A digital space for code, ideas, and building the future.</p>
+  <div class="hdr">
+    <h1>// VISION.EXE &nbsp;—&nbsp; DISCOVER</h1>
+    <div class="hdr-bar"></div>
+  </div>
 
-        <div class="about-card">
-            <h2>About the Owner</h2>
-            <p>I build things for the web. When I'm not exploring new tech stacks, I'm probably breaking production. Check out my repositories to see what I'm working on right now.</p>
-            
-            <a href="https://github.com/dotcomVishal" target="_blank" class="btn">
-                Initialize GitHub
-            </a>
+  <div class="cards-row" id="cardsRow">
+    <div class="card" data-index="0">
+      <div class="card-inner">
+        <span class="card-num">01 / 04</span>
+        <div class="card-title">MISSION</div>
+        <div class="card-body-wrap">
+          <div class="card-body">
+            To build a unfied workplace for integration of mechatronics projects.
+          </div>
+          <span class="card-tag">MISSION &gt;</span>
         </div>
+      </div>
     </div>
 
+    <div class="card" data-index="1">
+      <div class="card-inner">
+        <span class="card-num">02 / 04</span>
+        <div class="card-title">ARCHITECTURE</div>
+        <div class="card-body-wrap">
+          <div class="card-body">
+            to be updated .
+          </div>
+          <span class="card-tag">LEARN MORE &gt;</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-index="2">
+      <div class="card-inner">
+        <span class="card-num">03 / 04</span>
+        <div class="card-title">Team</div>
+        <div class="card-body-wrap">
+          <div class="card-body">
+            2 guys , 1 Vision.
+          </div>
+          <span class="card-tag">MEET US &gt;</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-index="3">
+      <div class="card-inner">
+        <span class="card-num">04 / 04</span>
+        <div class="card-title">Join Us</div>
+        <div class="card-body-wrap">
+          <div class="card-body">
+            Interested in working with us ? learn more about where we are and what wee seek.
+          </div>
+          <span class="card-tag">Click Here &gt;</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ground">
+    <div class="g-line"></div>
+    <div class="g-dash"></div>
+    <div class="g-dots"></div>
+  </div>
+
+  <div class="rover" id="rover" style="bottom: 114px;">
+    <svg width="120" height="92" viewBox="0 0 60 46" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+      <rect x="28" y="0"  width="3" height="6" fill="#1a1a1a"/>
+      <rect x="25" y="0"  width="9" height="2" fill="#1a1a1a"/>
+      <rect x="28" y="1"  width="3" height="1" fill="#f0f0f0"/>
+      <rect x="5"  y="6"  width="50" height="18" fill="#888888"/>
+      <rect x="7"  y="7"  width="46" height="15" fill="#f0f0f0"/>
+      <rect x="10" y="9"  width="10" height="8" fill="#1a1a1a"/>
+      <rect x="11" y="10" width="3"  height="3" fill="#f0f0f0"/>
+      <rect x="38" y="9"  width="10" height="8" fill="#1a1a1a"/>
+      <rect x="39" y="10" width="3"  height="3" fill="#f0f0f0"/>
+      <rect x="27" y="11" width="5"  height="4" fill="#888888"/>
+      <rect x="28" y="12" width="3"  height="2" fill="#f0f0f0"/>
+      <rect x="2"  y="23" width="56" height="5" fill="#888888"/>
+      <rect x="0"  y="21" width="5"  height="3" fill="#888888"/>
+      <rect class="puff" x="-3" y="20" width="3" height="3" fill="#aaaaaa"/>
+      <g class="wheel" style="transform-origin:13px 32px">
+        <rect x="4"  y="26" width="18" height="18" fill="#1a1a1a"/>
+        <rect x="6"  y="28" width="14" height="14" fill="#888888"/>
+        <rect x="9"  y="31" width="8"  height="8"  fill="#f0f0f0"/>
+        <rect x="12" y="26" width="2"  height="18" fill="#1a1a1a"/>
+        <rect x="4"  y="31" width="18" height="2"  fill="#1a1a1a"/>
+      </g>
+      <g class="wheel" style="transform-origin:47px 32px">
+        <rect x="38" y="26" width="18" height="18" fill="#1a1a1a"/>
+        <rect x="40" y="28" width="14" height="14" fill="#888888"/>
+        <rect x="43" y="31" width="8"  height="8"  fill="#f0f0f0"/>
+        <rect x="46" y="26" width="2"  height="18" fill="#1a1a1a"/>
+        <rect x="38" y="31" width="18" height="2"  fill="#1a1a1a"/>
+      </g>
+    </svg>
+  </div>
+
+  <nav class="slider-nav">
+    <button class="nbtn" id="btnPrev" disabled>
+      <svg width="13" height="13" viewBox="0 0 13 13"><polygon points="10,1 3,6.5 10,12" fill="#1a1a1a"/></svg>
+    </button>
+    <div class="dots" id="dots">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <button class="nbtn" id="btnNext">
+      <svg width="13" height="13" viewBox="0 0 13 13"><polygon points="3,1 10,6.5 3,12" fill="#1a1a1a"/></svg>
+    </button>
+  </nav>
+
+  <span class="hint hint-l">[ ← → KEYS OR CLICK ]</span>
+  <span class="hint hint-r">VISION.EXE v1.1</span>
+</section>
+    <script src="script.js"></script>
 </body>
 </html>
