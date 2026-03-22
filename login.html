@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VISION.EXE - PORTAL</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page">
+
+    <nav class="main-nav">
+        <a href="index.html" class="logo" style="text-decoration: none;">VISION.EXE</a>
+    </nav>
+
+    <div class="crt-assembly">
+        
+        <div class="monitor-shell">
+            
+            <div class="monitor-bezel">
+                
+                <div class="monitor-glass">
+                    <div class="scanlines"></div>
+                    
+                    <div class="screen-ui">
+    <div class="auth-tabs">
+        <span class="tab active" id="tab-login" onclick="switchTab('login')">login</span>
+        <span class="tab" id="tab-signup" onclick="switchTab('signup')">signup</span>
+    </div>
+
+    <form class="auth-form" id="auth-form">
+        <div class="input-group">
+            <label id="email-label">> email_</label>
+            <input type="email" id="email-input" class="retro-input" autocomplete="off" spellcheck="false" required>
+        </div>
+        
+        <div class="input-group">
+            <label>> password_</label>
+            <input type="password" id="password-input" class="retro-input" required>
+        </div>
+
+        <div class="auth-actions">
+            <button type="button" id="btn-google" class="btn-google">[G] continue with google</button>
+            <button type="submit" id="btn-submit" class="btn-submit">login <span class="cursor">█</span></button>
+        </div>
+        <p id="auth-error" style="color: red; font-size: 8px; margin-top: 10px;"></p>
+    </form>
+</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="monitor-neck"></div>
+        <div class="monitor-base"></div>
+
+    </div>
+
+<script type="module">
+  // Import the functions you need from the Firebase SDKs
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+  // TODO: REPLACE THIS OBJECT WITH YOUR KEYS FROM FIREBASE
+  const firebaseConfig = {
+    apiKey: "AIzaSyBbctYUjzVKpBFjMN_w5MPT1Dwm_ktjt9Y",
+    authDomain: "vision-exe.firebaseapp.com",
+    projectId: "vision-exe",
+    storageBucket: "vision-exe.firebasestorage.app",
+    messagingSenderId: "349075462702",
+    appId: "1:349075462702:web:a5cd6a30cd88001f025dbf"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const googleProvider = new GoogleAuthProvider();
+
+  // UI Elements
+  const form = document.getElementById('auth-form');
+  const emailInput = document.getElementById('email-input');
+  const passwordInput = document.getElementById('password-input');
+  const submitBtn = document.getElementById('btn-submit');
+  const googleBtn = document.getElementById('btn-google');
+  const errorMsg = document.getElementById('auth-error');
+  
+  // Tab State
+  let currentMode = 'login'; 
+
+  window.switchTab = function(mode) {
+      currentMode = mode;
+      document.getElementById('tab-login').classList.toggle('active', mode === 'login');
+      document.getElementById('tab-signup').classList.toggle('active', mode === 'signup');
+      submitBtn.innerHTML = mode === 'login' ? 'login <span class="cursor">█</span>' : 'register <span class="cursor">█</span>';
+      errorMsg.innerText = '';
+  };
+
+  // Handle Email/Password Submit
+  form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = emailInput.value;
+      const password = passwordInput.value;
+      
+      if (currentMode === 'login') {
+          signInWithEmailAndPassword(auth, email, password)
+              .then((userCredential) => {
+                  window.location.href = 'dashboard.html'; // REDIRECT!
+              })
+              .catch((error) => {
+                  errorMsg.innerText = "> ERROR: " + error.message;
+              });
+      } else {
+          createUserWithEmailAndPassword(auth, email, password)
+              .then((userCredential) => {
+                  window.location.href = 'dashboard.html'; // REDIRECT!
+              })
+              .catch((error) => {
+                  errorMsg.innerText = "> ERROR: " + error.message;
+              });
+      }
+  });
+
+  // Handle Google Login
+  googleBtn.addEventListener('click', () => {
+      signInWithPopup(auth, googleProvider)
+          .then((result) => {
+              window.location.href = 'dashboard.html'; // REDIRECT!
+          }).catch((error) => {
+              errorMsg.innerText = "> ERROR: " + error.message;
+          });
+  });
+</script>
+</body>
+</html>
